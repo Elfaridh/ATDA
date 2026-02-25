@@ -1,6 +1,6 @@
 # ATDA - Ansyitoh Tullab Daarul Amiin
 
-Ini adalah aplikasi web yang bisa langsung dijalankan.
+kita kawal bersama calon pemimpin masa depan kita
 
 ## Fitur yang sudah jalan
 

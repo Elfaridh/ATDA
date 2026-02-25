@@ -23,6 +23,14 @@ body {
   padding: 40px 24px;
 }
 
+.hero-logo {
+  width: clamp(120px, 20vw, 190px);
+  height: auto;
+  display: block;
+  margin: 0 auto 12px;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28));
+}
+
 .badge {
   display: inline-block;
   background: rgba(255,255,255,0.16);
@@ -43,6 +51,7 @@ p {
   margin: 0 auto;
   color: var(--muted);
   line-height: 1.7;
+  text-transform: capitalize;
 }
 
 .actions {
