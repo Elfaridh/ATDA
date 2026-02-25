@@ -92,3 +92,32 @@ Lalu buka:
 - `http://localhost:4173/preview/`
 
 Preview ini menampilkan prototipe UI interaktif untuk membantu stakeholder melakukan validasi cepat sebelum implementasi mobile native.
+
+## 8) Deployment (Siap Production Preview)
+
+### Opsi A: Docker (direkomendasikan)
+
+```bash
+docker build -t atda-preview .
+docker run --rm -p 8080:8080 atda-preview
+```
+
+Buka: `http://localhost:8080`
+
+### Opsi B: Netlify
+- File `netlify.toml` sudah disiapkan.
+- Publish directory: `preview`
+
+### Opsi C: Vercel
+- File `vercel.json` sudah disiapkan.
+- Output directory: `preview`
+
+## 9) Mengatasi Warning Conflict Branch
+
+Untuk mencegah conflict marker ikut ter-merge, tersedia script validasi:
+
+```bash
+./scripts/check-conflicts.sh
+```
+
+CI (`.github/workflows/ci.yml`) akan otomatis gagal jika masih ada marker konflik (`<<<<<<<`, `=======`, `>>>>>>>`).

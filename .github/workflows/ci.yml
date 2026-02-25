@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: ["*"]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check merge conflict markers
+        run: ./scripts/check-conflicts.sh
+
+      - name: Ensure preview entrypoint exists
+        run: test -f preview/index.html
+
+      - name: Build docker image
+        run: docker build -t atda-preview:ci .
