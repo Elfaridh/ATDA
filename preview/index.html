@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ATDA Preview - Manajemen Santri & Wali</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <h1>ATDA Preview</h1>
+        <p>Aplikasi Manajemen Santri & Wali Santri Terpadu Pesantren</p>
+      </div>
+      <div class="badge">Mode Preview</div>
+    </header>
+
+    <main class="container">
+      <aside class="sidebar">
+        <h2>Role</h2>
+        <div id="roleList" class="role-list"></div>
+
+        <h2>Modul</h2>
+        <nav class="menu" id="moduleMenu">
+          <button data-module="dashboard" class="active">Dashboard Wali</button>
+          <button data-module="santri">Data Santri</button>
+          <button data-module="keuangan">Keuangan</button>
+          <button data-module="akademik">Akademik & Raport</button>
+          <button data-module="karakter">Karakter & Pembinaan</button>
+          <button data-module="notifikasi">Notifikasi</button>
+          <button data-module="keamanan">Keamanan & Privasi</button>
+        </nav>
+      </aside>
+
+      <section class="content">
+        <div id="view"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small>
+        Preview ini adalah prototipe interaktif dari dokumen: schema DB, API, flow user, dan UI utama.
+      </small>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
