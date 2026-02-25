@@ -44,3 +44,11 @@ docker run --rm -p 5000:5000 atda-app
 - `src/templates/index.html` → halaman utama aplikasi
 - `src/static/app.js` → render dashboard interaktif
 - `src/static/app.css` → styling UI
+
+## Deployment Status GitHub
+
+Agar tidak muncul peringatan **"This branch has not been deployed"**, repository ini sekarang memiliki workflow:
+
+- `.github/workflows/deploy-status.yml`
+
+Workflow tersebut otomatis membuat status deployment `preview` untuk setiap push branch.
