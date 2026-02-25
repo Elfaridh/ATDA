@@ -52,3 +52,13 @@ Agar tidak muncul peringatan **"This branch has not been deployed"**, repository
 - `.github/workflows/deploy-status.yml`
 
 Workflow tersebut otomatis membuat status deployment `preview` untuk setiap push branch.
+
+## Deploy ke GitHub Pages (agar tidak tampil README saja)
+
+Jika deploy ke `https://<username>.github.io/<repo>/`, pastikan file `index.html` di root repository ada (sudah disediakan di project ini).
+
+`index.html` akan otomatis mengarahkan ke:
+
+- `./preview/`
+
+Sehingga saat membuka link GitHub Pages, user langsung masuk ke landing page aplikasi, bukan tampilan markdown README.
