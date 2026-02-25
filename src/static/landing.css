@@ -1,0 +1,77 @@
+:root {
+  --bg1: #0f172a;
+  --bg2: #1e3a8a;
+  --text: #f8fafc;
+  --muted: #cbd5e1;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  color: var(--text);
+  background: radial-gradient(circle at top, var(--bg2), var(--bg1) 65%);
+  display: grid;
+  place-items: center;
+}
+
+.hero {
+  width: min(920px, 92vw);
+  text-align: center;
+  padding: 40px 24px;
+}
+
+.hero-logo {
+  width: clamp(120px, 20vw, 190px);
+  height: auto;
+  display: block;
+  margin: 0 auto 12px;
+  filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.28));
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+h1 {
+  margin: 18px 0 12px;
+  font-size: clamp(30px, 5vw, 52px);
+  line-height: 1.1;
+}
+
+p {
+  max-width: 760px;
+  margin: 0 auto;
+  color: var(--muted);
+  line-height: 1.7;
+  text-transform: capitalize;
+}
+
+.actions {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 11px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.primary { background: #22c55e; color: #052e16; }
+.ghost {
+  border: 1px solid rgba(255,255,255,0.35);
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+}

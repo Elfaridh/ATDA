@@ -1,80 +1,54 @@
-# Aplikasi Manajemen Santri & Wali Santri Terpadu (ATDA)
+# ATDA - Ansyitoh Tullab Daarul Amiin
 
-Blueprint siap produksi untuk sistem manajemen pesantren yang amanah, transparan, dan selaras kultur tarbiyah.
+kita kawal bersama calon pemimpin masa depan kita
 
-## 1) Visi Produk
+## Fitur yang sudah jalan
 
-Aplikasi ini dirancang untuk:
-- Mengelola data santri terpusat (akademik, karakter, keuangan, administrasi).
-- Menyediakan dashboard wali santri real-time dengan informasi proporsional.
-- Mengurangi proses manual dan meningkatkan akurasi administrasi.
-- Menjaga keamanan data sensitif berbasis RBAC, audit log, dan enkripsi.
+- Login simulasi sebagai **Wali Santri** (pilih wali dari dropdown)
+- Dashboard ringkasan anak:
+  - Akademik (rata-rata nilai + detail mapel)
+  - Keuangan (saldo wallet, riwayat transaksi, tagihan)
+  - Karakter & pembinaan (absensi/pelanggaran/pembinaan/prestasi)
+- Endpoint API siap dipakai frontend:
+  - `GET /api/students?role=...&user_id=...`
+  - `GET /api/guardian/<id>/dashboard`
+- Healthcheck deployment: `GET /healthz`
 
-## 2) Arsitektur Solusi
+## Tech Stack
 
-### Komponen Utama
-1. **Mobile App (Flutter)**
-   - Super Admin, Admin Pesantren, Ustadz/Wali Kelas, Musyrif, Santri, Wali Santri.
-   - Mode sederhana untuk wali santri (font besar, navigasi ringkas).
-   - Offline-first local cache + background sync.
+- Backend: Python built-in HTTP server + REST handler
+- Database: SQLite (otomatis dibuat + seeded saat start)
+- Frontend: HTML + CSS + JavaScript (dashboard interaktif via fetch API)
 
-2. **Backend API (REST + OpenAPI)**
-   - Framework: FastAPI / NestJS (keduanya mendukung validasi kuat dan RBAC).
-   - Endpoint role-based dan tenant-aware (multi-pesantren).
-   - Integrasi notifikasi (push, WhatsApp opsional, email opsional).
+## Menjalankan Lokal
 
-3. **Database Relasional (PostgreSQL)**
-   - Skema multi-tenant (`pesantren_id` pada entitas domain).
-   - Soft delete + audit trail.
-   - Encryption at rest (TDE/provider-managed) + field-level encryption untuk NIK/kontak sensitif.
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python src/app.py
+```
 
-4. **Object Storage**
-   - Foto profil, dokumen penting, raport PDF, kwitansi.
-   - Signed URL dengan TTL pendek.
+Buka: `http://localhost:5000`
 
-5. **Queue & Worker**
-   - Trigger notifikasi otomatis (saldo menipis, absen, pelanggaran, raport terbit).
+## Menjalankan via Docker
 
-## 3) Fitur Wajib yang Terpenuhi
+```bash
+docker build -t atda-app .
+docker run --rm -p 5000:5000 atda-app
+```
 
-- Role & hak akses lengkap: Super Admin, Admin, Ustadz/Wali Kelas, Musyrif, Santri, Wali Santri.
-- Modul data santri lengkap (profil, asrama/kelas, wali, status).
-- Modul keuangan (e-wallet internal, SPP/infaq, tunggakan, kwitansi digital).
-- Modul akademik (diniyah/umum/tahfidz, raport digital + grafik).
-- Modul karakter (absensi, pelanggaran, pembinaan, apresiasi).
-- Dashboard wali santri real-time terfilter.
-- Notifikasi multi-channel.
-- Keamanan & privasi berlapis.
+## Struktur utama
 
-## 4) Deliverables di Repository
+- `src/app.py` → backend + API + seed data
+- `src/templates/index.html` → halaman utama aplikasi
+- `src/static/app.js` → render dashboard interaktif
+- `src/static/app.css` → styling UI
 
-- **Database schema**: `docs/database-schema.sql`
-- **API spec (OpenAPI)**: `docs/api-spec.yaml`
-- **User flow (per role)**: `docs/user-flow.md`
-- **Contoh UI utama**: `docs/ui-wireframes.md`
+## Deployment Status GitHub
 
-## 5) Strategi Implementasi Bertahap
+Agar tidak muncul peringatan **"This branch has not been deployed"**, repository ini sekarang memiliki workflow:
 
-### Fase 1 (MVP - 8 s.d. 12 minggu)
-- Auth + RBAC + manajemen santri
-- Keuangan inti (wallet + pembayaran admin)
-- Akademik dasar + raport PDF
-- Dashboard wali + notifikasi push
+- `.github/workflows/deploy-status.yml`
 
-### Fase 2
-- Offline-first penuh + conflict resolution
-- WhatsApp gateway + email
-- Multi pesantren penuh (cross-tenant admin)
-- Analitik tren akademik/disiplin
-
-### Fase 3 (Visioner)
-- AI insight: risiko penurunan prestasi/pelanggaran
-- Ringkasan naratif perkembangan karakter
-- Musyawarah wali santri (forum terstruktur)
-
-## 6) Prinsip Produk Berbasis Nilai Pesantren
-
-- **Amanah**: data valid, jejak audit jelas.
-- **Transparan**: wali mendapat informasi penting tanpa membuka data internal berlebihan.
-- **Adab & Akhlak**: terminologi, notifikasi, dan narasi disusun edukatif, bukan menghukum.
-- **Tarbiyah**: indikator karakter bersifat pembinaan bertahap.
+Workflow tersebut otomatis membuat status deployment `preview` untuk setiap push branch.

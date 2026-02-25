@@ -32,3 +32,9 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Python artifacts
+__pycache__/
+*.pyc
+.venv/
+*.db
