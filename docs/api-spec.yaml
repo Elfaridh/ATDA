@@ -1,0 +1,229 @@
+openapi: 3.0.3
+info:
+  title: ATDA API
+  version: 1.0.0
+  description: API aplikasi manajemen santri & wali santri terpadu.
+servers:
+  - url: https://api.atda.id/v1
+security:
+  - bearerAuth: []
+paths:
+  /auth/login:
+    post:
+      summary: Login awal (email/phone + password)
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: OTP challenge
+  /auth/verify-otp:
+    post:
+      summary: Verifikasi OTP dan terbitkan JWT
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [session_id, otp_code]
+              properties:
+                session_id: { type: string }
+                otp_code: { type: string }
+      responses:
+        '200':
+          description: JWT access token
+  /students:
+    get:
+      summary: List santri (filter role-based)
+      tags: [Students]
+      parameters:
+        - in: query
+          name: status
+          schema: { type: string, enum: [AKTIF, CUTI, ALUMNI] }
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Buat data santri
+      tags: [Students]
+      responses:
+        '201':
+          description: Created
+  /students/{studentId}:
+    get:
+      summary: Detail profil santri
+      tags: [Students]
+      parameters:
+        - $ref: '#/components/parameters/StudentId'
+      responses:
+        '200':
+          description: OK
+    patch:
+      summary: Update profil santri
+      tags: [Students]
+      parameters:
+        - $ref: '#/components/parameters/StudentId'
+      responses:
+        '200':
+          description: Updated
+  /students/{studentId}/wallet:
+    get:
+      summary: Lihat saldo wallet santri
+      tags: [Finance]
+      parameters:
+        - $ref: '#/components/parameters/StudentId'
+      responses:
+        '200':
+          description: OK
+  /students/{studentId}/wallet/topup:
+    post:
+      summary: Top-up wallet oleh wali/admin
+      tags: [Finance]
+      parameters:
+        - $ref: '#/components/parameters/StudentId'
+      responses:
+        '200':
+          description: Top-up success
+  /students/{studentId}/wallet/transactions:
+    get:
+      summary: Riwayat transaksi wallet
+      tags: [Finance]
+      parameters:
+        - $ref: '#/components/parameters/StudentId'
+      responses:
+        '200':
+          description: OK
+  /students/{studentId}/bills:
+    get:
+      summary: Daftar tagihan SPP/infaq
+      tags: [Finance]
+      parameters:
+        - $ref: '#/components/parameters/StudentId'
+      responses:
+        '200':
+          description: OK
+  /student-bills/{studentBillId}/payments:
+    post:
+      summary: Input pembayaran + generate kwitansi
+      tags: [Finance]
+      parameters:
+        - in: path
+          name: studentBillId
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '201':
+          description: Payment recorded
+  /classes/{classId}/assessments:
+    post:
+      summary: Buat assessment kelas
+      tags: [Academic]
+      parameters:
+        - in: path
+          name: classId
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '201':
+          description: Created
+  /assessments/{assessmentId}/grades:
+    post:
+      summary: Input nilai massal
+      tags: [Academic]
+      parameters:
+        - in: path
+          name: assessmentId
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: Saved
+  /students/{studentId}/report-cards:
+    get:
+      summary: Daftar raport digital
+      tags: [Academic]
+      parameters:
+        - $ref: '#/components/parameters/StudentId'
+      responses:
+        '200':
+          description: OK
+    post:
+      summary: Generate/publish raport semester
+      tags: [Academic]
+      parameters:
+        - $ref: '#/components/parameters/StudentId'
+      responses:
+        '201':
+          description: Report published
+  /students/{studentId}/attendance:
+    post:
+      summary: Input absensi kelas/asrama
+      tags: [Character]
+      parameters:
+        - $ref: '#/components/parameters/StudentId'
+      responses:
+        '201':
+          description: Recorded
+  /students/{studentId}/violations:
+    post:
+      summary: Catat pelanggaran + poin
+      tags: [Character]
+      parameters:
+        - $ref: '#/components/parameters/StudentId'
+      responses:
+        '201':
+          description: Recorded
+  /students/{studentId}/coaching-notes:
+    post:
+      summary: Catatan pembinaan tarbiyah
+      tags: [Character]
+      parameters:
+        - $ref: '#/components/parameters/StudentId'
+      responses:
+        '201':
+          description: Recorded
+  /guardian/dashboard:
+    get:
+      summary: Dashboard wali santri
+      tags: [Guardian]
+      responses:
+        '200':
+          description: Ringkasan akademik/keuangan/disiplin
+  /notifications:
+    get:
+      summary: Riwayat notifikasi user login
+      tags: [Notifications]
+      responses:
+        '200':
+          description: OK
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    StudentId:
+      in: path
+      name: studentId
+      required: true
+      schema:
+        type: string
+        format: uuid
+  schemas:
+    LoginRequest:
+      type: object
+      required: [identifier, password]
+      properties:
+        identifier:
+          type: string
+          example: wali@example.com
+        password:
+          type: string
+          format: password
