@@ -140,13 +140,14 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
         path = parsed.path
+        normalized = path if path == '/' else path.rstrip('/')
 
-        if path == '/':
+        if normalized == '/':
             html = read_file(BASE_DIR / 'templates' / 'landing.html')
             self._send(200, 'text/html; charset=utf-8', html)
             return
 
-        if path == '/app':
+        if normalized == '/app':
             html = read_file(BASE_DIR / 'templates' / 'index.html').decode('utf-8')
             conn = get_conn()
             guardians = conn.execute("SELECT id, full_name, phone FROM users WHERE role='WALI_SANTRI'").fetchall()
@@ -156,8 +157,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send(200, 'text/html; charset=utf-8', html.encode('utf-8'))
             return
 
-        if path.startswith('/static/'):
-            rel = path.replace('/static/', '')
+        if normalized.startswith('/static/'):
+            rel = normalized.replace('/static/', '')
             fpath = BASE_DIR / 'static' / rel
             if not fpath.exists():
                 self._send(404, body=b'Not Found')
@@ -170,11 +171,11 @@ class Handler(BaseHTTPRequestHandler):
             self._send(200, ctype, read_file(fpath))
             return
 
-        if path == '/healthz':
+        if normalized == '/healthz':
             self._send_json({'ok': True})
             return
 
-        if path == '/api/students':
+        if normalized == '/api/students':
             query = parse_qs(parsed.query)
             role = query.get('role', [None])[0]
             user_id = query.get('user_id', [None])[0]
@@ -192,8 +193,8 @@ class Handler(BaseHTTPRequestHandler):
             self._send_json([dict(r) for r in rows])
             return
 
-        if path.startswith('/api/guardian/') and path.endswith('/dashboard'):
-            parts = path.split('/')
+        if normalized.startswith('/api/guardian/') and normalized.endswith('/dashboard'):
+            parts = normalized.split('/')
             guardian_id = int(parts[3])
             conn = get_conn()
             student = conn.execute('SELECT * FROM students WHERE guardian_id=? LIMIT 1', (guardian_id,)).fetchone()
