@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ATDA App</title>
+  <link rel="stylesheet" href="/static/app.css"/>
+</head>
+<body>
+  <header>
+    <h1>ATDA - Aplikasi Manajemen Santri & Wali Santri</h1>
+    <p>Aplikasi berjalan langsung (bukan blueprint), dengan dashboard wali, data santri, akademik, keuangan, dan pembinaan.</p>
+  </header>
+
+  <section class="panel">
+    <label for="guardianSelect">Login sebagai Wali Santri:</label>
+    <select id="guardianSelect">
+      {{GUARDIAN_OPTIONS}}
+    </select>
+    <button id="loadBtn">Muat Dashboard Anak</button>
+  </section>
+
+  <main id="dashboard" class="hidden">
+    <div class="cards" id="summaryCards"></div>
+
+    <div class="grid-2">
+      <article class="panel">
+        <h2>Nilai Akademik</h2>
+        <table id="gradesTable"><thead><tr><th>Kategori</th><th>Mapel</th><th>Nilai</th><th>Semester</th></tr></thead><tbody></tbody></table>
+      </article>
+      <article class="panel">
+        <h2>Tagihan</h2>
+        <table id="billsTable"><thead><tr><th>Jenis</th><th>Periode</th><th>Tagihan</th><th>Bayar</th><th>Status</th></tr></thead><tbody></tbody></table>
+      </article>
+      <article class="panel">
+        <h2>Riwayat Wallet</h2>
+        <table id="txTable"><thead><tr><th>Tipe</th><th>Nominal</th><th>Keterangan</th><th>Waktu</th></tr></thead><tbody></tbody></table>
+      </article>
+      <article class="panel">
+        <h2>Karakter & Pembinaan</h2>
+        <ul id="charList"></ul>
+      </article>
+    </div>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

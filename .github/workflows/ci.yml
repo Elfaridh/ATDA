@@ -15,8 +15,14 @@ jobs:
       - name: Check merge conflict markers
         run: ./scripts/check-conflicts.sh
 
-      - name: Ensure preview entrypoint exists
-        run: test -f preview/index.html
+      - name: Syntax check
+        run: python -m py_compile src/app.py
 
-      - name: Build docker image
-        run: docker build -t atda-preview:ci .
+      - name: API smoke test
+        run: |
+          python src/app.py &
+          PID=$!
+          sleep 2
+          curl -f http://127.0.0.1:5000/healthz
+          curl -f http://127.0.0.1:5000/api/students
+          kill $PID
