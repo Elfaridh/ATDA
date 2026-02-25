@@ -142,6 +142,11 @@ class Handler(BaseHTTPRequestHandler):
         path = parsed.path
 
         if path == '/':
+            html = read_file(BASE_DIR / 'templates' / 'landing.html')
+            self._send(200, 'text/html; charset=utf-8', html)
+            return
+
+        if path == '/app':
             html = read_file(BASE_DIR / 'templates' / 'index.html').decode('utf-8')
             conn = get_conn()
             guardians = conn.execute("SELECT id, full_name, phone FROM users WHERE role='WALI_SANTRI'").fetchall()

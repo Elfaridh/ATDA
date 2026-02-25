@@ -1,6 +1,6 @@
-# ATDA - Aplikasi Manajemen Santri & Wali Santri Terpadu
+# ATDA - Ansyitoh Tullab Daarul Amiin
 
-Ini adalah **aplikasi web yang bisa langsung dijalankan**, bukan sekadar blueprint.
+Ini adalah aplikasi web yang bisa langsung dijalankan.
 
 ## Fitur yang sudah jalan
 
@@ -44,7 +44,3 @@ docker run --rm -p 5000:5000 atda-app
 - `src/templates/index.html` → halaman utama aplikasi
 - `src/static/app.js` → render dashboard interaktif
 - `src/static/app.css` → styling UI
-
-## Catatan
-
-Dokumen blueprint sebelumnya (`docs/`) tetap dipertahankan sebagai referensi desain/arsitektur, tapi sekarang repository ini sudah berisi aplikasi yang berjalan langsung.
